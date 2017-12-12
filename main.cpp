@@ -89,7 +89,7 @@ int main(int argc, char*argv[]){
     thieves=stoi(words[2]);
     jewelers=stoi(words[3]);
 
-    priority_queue <Status,vector<Status>,compareDistance> q;
+    priority_queue <Status,vector<Status>,compareDistance > q;
 
     Node vertices[n+1];
 
@@ -165,7 +165,7 @@ int main(int argc, char*argv[]){
         if(!isVisited(currentStatus.roadmap[currentStatus.town],vertices[currentStatus.town].edges[i].finish)){
 
             if(vertices[currentStatus.town].edges[i].thieves.size()==0){
-            Status s(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth);
+            Status s(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth+currentStatus.distance);
             s.path=currentStatus.path+to_string(vertices[currentStatus.town].edges[i].finish)+" ";
             bool isCoin=false;
                 for(int j=1;j<14;j++){
@@ -180,6 +180,7 @@ int main(int argc, char*argv[]){
             } else{
                 currentStatus.roadmap[currentStatus.town].push_back(s.town);
                 s.roadmap=currentStatus.roadmap;
+
             }
 
             q.push(s);
@@ -202,7 +203,7 @@ int main(int argc, char*argv[]){
                 enoughCoin=false;
             }
             if(enoughCoin){
-                Status s2(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth);
+                Status s2(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth+currentStatus.distance);
                 bool isCoin2=false;
                 for(int j=1;j<14;j++){
                     if(vertices[s2.town].coins[j]==1){
