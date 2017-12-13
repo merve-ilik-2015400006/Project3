@@ -149,7 +149,8 @@ int main(int argc, char*argv[]){
 
     ofstream myfile(argv[2]);
     bool isDone=false;
-    while(!q.empty()){
+
+   while(!q.empty()){
 
        currentStatus=q.top();
        q.pop();
@@ -231,10 +232,10 @@ int main(int argc, char*argv[]){
     return 0;
 }
 
-    
-
-
+            
    
+       
    
+
+            
                 
-                   
