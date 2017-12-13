@@ -1,7 +1,7 @@
- 
-
-    
-        #include <queue>
+//
+// Created by Merve İlik on 10/12/2017.
+//
+#include <queue>
 #include <vector>
 #include "Node.h"
 #include "Edge.h"
@@ -21,9 +21,6 @@ void split1(const string& str, Container& cont)
          back_inserter(cont));
 }
 
-
-
-
 int main(int argc, char*argv[]){
 
     ifstream infile(argv[1]);
@@ -39,11 +36,8 @@ int main(int argc, char*argv[]){
     roads=stoi(words[1]);
     thieves=stoi(words[2]);
     jewelers=stoi(words[3]);
-    priority_queue <Status,vector<Status>,compareDistance > q;
 
     Node vertices[n+1];
-
-
 
     for(int i=0;i<jewelers;i++){
         int town;
@@ -75,7 +69,6 @@ int main(int argc, char*argv[]){
 
         thiefNumber=stoi(words2[3]);
 
-
         Edge e1(begin,end,weigth);
         Edge e2(end,begin,weigth);
 
@@ -88,105 +81,104 @@ int main(int argc, char*argv[]){
         vertices[end].edges.push_back(e2);
         vertices[begin].edges.push_back(e1);
     }
-    map <vector<int>,int> m1;
     Status currentStatus(1,0);
     for(int a=0;a<14;a++){
         if(vertices[1].coins[a]!=0)
             currentStatus.coins[a]=1;
     }
-    vector<int> road1;
+
+    priority_queue <Status,vector<Status>,compareDistance > q;
     currentStatus.path="1 ";
     q.push(currentStatus);
 
     ofstream myfile(argv[2]);
     bool isDone=false;
 
-     while(!q.empty()){
 
-        currentStatus=q.top();
-        q.pop();
-        if(currentStatus.town==n){
-            isDone=true;
-            myfile<<currentStatus.path;
-            break;
-        }
-        for(int i=0;i<vertices[currentStatus.town].edges.size();i++){
-            vector<int> road={currentStatus.town,vertices[currentStatus.town].edges[i].finish};
-            if(currentStatus.roadmap.count(road)==0){
-                if(vertices[currentStatus.town].edges[i].thieves.size()==0){
-                    Status s(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth+currentStatus.distance);
-                    s.path=currentStatus.path+to_string(vertices[currentStatus.town].edges[i].finish)+" ";
+      while(!q.empty()){
+
+         currentStatus=q.top();
+         q.pop();
+         if(currentStatus.town==n){
+             isDone=true;
+             myfile<<currentStatus.path;
+             break;
+         }
+         for(int i=0;i<vertices[currentStatus.town].edges.size();i++){
+
+             Edge e=vertices[currentStatus.town].edges[i];
+
+             vector<int> road={currentStatus.town,e.finish};
+            if(e.thieves.size()==0){
+                bool mapHasIt=true;
+                if(currentStatus.roadmap.count(road)==0)
+                    mapHasIt=false;
+                if(!mapHasIt){
+                    Status s(e.finish,e.weigth+currentStatus.distance);
+                    s.path=currentStatus.path+to_string(e.finish)+" ";
+                    for(int a=1;a<14;a++){
+                        s.coins[a]=currentStatus.coins[a];
+                    }
                     bool isCoin=false;
-                    for(int j=1;j<14;j++){
-                        if(vertices[s.town].coins[j]==1){
-                            s.coins[j]=1;
+                    for(int b=1;b<14;b++){
+                        if(currentStatus.coins[b]==0 && vertices[s.town].coins[b]==1){
+                            s.coins[b]=1;
                             isCoin=true;
+                            s.roadmap.clear();
+
                         }
                     }
-                    if(isCoin){
-                        s.roadmap.clear();
-                    } else{
-
-                        //s.roadmap=currentStatus.roadmap;
+                    if(!isCoin){
                         s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
                         s.roadmap.insert(make_pair(road,0));
                     }
-
                     q.push(s);
-
-                }
-
-                else if(vertices[currentStatus.town].edges[i].thieves.size()!=0){
-
-                    set<int> thiefwants;
-                    for(int j=0;j<vertices[currentStatus.town].edges[i].thieves.size();j++){
-                        if(vertices[currentStatus.town].edges[i].thieves[j]!=0)
-                            thiefwants.insert(vertices[currentStatus.town].edges[i].thieves[j]);
-
-                    }
-
-
-                    bool enoughCoin=true;
-                    for (int item : thiefwants){
-                        if(currentStatus.coins[item]==0)
-                            enoughCoin=false;
-                    }
-                    if(enoughCoin){
-                        Status s2(vertices[currentStatus.town].edges[i].finish,vertices[currentStatus.town].edges[i].weigth+currentStatus.distance);
-                        bool isCoin2=false;
-                        for(int j=1;j<14;j++){
-                            if(vertices[s2.town].coins[j]==1){
-                                s2.coins[j]=1;
-                                isCoin2=true;
-                            }
-                        }
-                        if(isCoin2){
-                            s2.roadmap.clear();
-                        } else{
-                            //s2.roadmap=currentStatus.roadmap;
-                            s2.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
-
-                            s2.roadmap.insert(make_pair(road,0));
-
-                        }
-
-                        s2.path=currentStatus.path+to_string(vertices[currentStatus.town].edges[i].finish)+" ";
-
-                        q.push(s2);
-                    }
-
                 }
             }
-        }
-    }
+
+             else {
+
+                bool canPassThief = true;
+                for (int j = 0; j < e.thieves.size(); j++) {
+                    if (currentStatus.coins[e.thieves[j]] == 0)
+                        canPassThief = false;
+                }
+
+                if (canPassThief) {
+
+                    bool mapHasIt = true;
+                    if (currentStatus.roadmap.count(road) == 0)
+                        mapHasIt = false;
+                    if (!mapHasIt) {
+                        Status s(e.finish,e.weigth + currentStatus.distance);
+                        s.path = currentStatus.path + to_string(e.finish) + " ";
+                        for (int a = 1; a < 14; a++) {
+                            s.coins[a] = currentStatus.coins[a];
+                        }
+                        bool isCoin = false;
+                        for (int b = 1; b < 14; b++) {
+                            if (currentStatus.coins[b]==0 &&vertices[s.town].coins[b] == 1) {
+                                s.coins[b] = 1;
+                                isCoin = true;
+                                s.roadmap.clear();
+                            }
+                        }
+                        if (!isCoin) {
+                            s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
+                            s.roadmap.insert(make_pair(road, 0));
+                        }
+                        q.push(s);
+                    }
+                }
+            }
+         }
+     }
+//int visited[n][8192]={0};
     if(!isDone)
         myfile<<-1;
 
     return 0;
- 
- }
-        
-           
-   
-            
-                
+}
+
+
+
