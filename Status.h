@@ -17,7 +17,7 @@ public:
     int distance;
     string path;
     int coins[14];
-    map <int,vector<int>> roadmap;
+    map <vector<int>,int> roadmap;
     Status(int town,int distance);
 };
 
