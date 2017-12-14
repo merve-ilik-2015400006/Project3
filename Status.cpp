@@ -10,7 +10,6 @@ using namespace std;
         town=_town;
         distance=_distance;
         path="";
-        coins=new bool[14];
         for(int i=0;i<=13;i++){
             coins[i]=false;
         }
