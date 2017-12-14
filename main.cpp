@@ -123,7 +123,7 @@ int main(int argc, char*argv[]){
                     }
                     if(isCoin){
                         for(int x=1;x<n;x++){
-                            for(int y=0;y<vertices[n].edges.size();y++){
+                            for(int y=0;y<vertices[x].edges.size();y++){
                                 vertices[x].edges[y].isVisited=false;
                             }
                         }
@@ -161,7 +161,7 @@ int main(int argc, char*argv[]){
                         }
                         if(isCoin){
                             for(int x=1;x<n;x++){
-                                for(int y=0;y<vertices[n].edges.size();y++){
+                                for(int y=0;y<vertices[x].edges.size();y++){
                                     vertices[x].edges[y].isVisited=false;
                                 }
                             }
