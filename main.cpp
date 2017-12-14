@@ -38,7 +38,6 @@ int main(int argc, char*argv[]){
     jewelers=stoi(words[3]);
 
     Node vertices[n+1];
-
     for(int i=0;i<jewelers;i++){
         int town;
         int coinNumber;
@@ -80,11 +79,11 @@ int main(int argc, char*argv[]){
         }
         vertices[end].edges.push_back(e2);
         vertices[begin].edges.push_back(e1);
+
     }
     Status currentStatus(1,0);
-    for(int a=0;a<14;a++){
-        if(vertices[1].coins[a])
-            currentStatus.coins[a]=true;
+    for(int a=1;a<14;a++){
+        currentStatus.coins[a]=vertices[currentStatus.town].coins[a];
     }
 
     priority_queue <Status,vector<Status>,compareDistance > q;
@@ -107,6 +106,7 @@ int main(int argc, char*argv[]){
          for(int i=0;i<vertices[currentStatus.town].edges.size();i++){
 
              Edge e=vertices[currentStatus.town].edges[i];
+             e.isVisited=vertices[currentStatus.town].edges[i].isVisited;
              if(e.thieves.size()==0){
                 if(!e.isVisited){
                     Status s(e.finish,e.weigth+currentStatus.distance);
@@ -119,13 +119,21 @@ int main(int argc, char*argv[]){
                         if(!currentStatus.coins[b] && vertices[s.town].coins[b]){
                             s.coins[b]=true;
                             isCoin=true;
-                            e.isVisited=false;
+                        }
+                    }
+                    if(isCoin){
+                        for(int x=1;x<n;x++){
+                            for(int y=0;y<vertices[n].edges.size();y++){
+                                vertices[x].edges[y].isVisited=false;
+                            }
                         }
                     }
                     if(!isCoin){
                     e.isVisited=true;
                     }
+
                     vertices[currentStatus.town].edges[i]=e;
+
                     q.push(s);
                 }
             }
@@ -149,7 +157,13 @@ int main(int argc, char*argv[]){
                             if (!currentStatus.coins[b] && vertices[s.town].coins[b]){
                                 s.coins[b]=true;
                                 isCoin=true;
-                                e.isVisited=false;
+                            }
+                        }
+                        if(isCoin){
+                            for(int x=1;x<n;x++){
+                                for(int y=0;y<vertices[n].edges.size();y++){
+                                    vertices[x].edges[y].isVisited=false;
+                                }
                             }
                         }
                         if (!isCoin){
