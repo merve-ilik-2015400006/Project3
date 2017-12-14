@@ -4,7 +4,6 @@
 #include "Status.h"
 #include <vector>
 #include <string>
-#include <map>
 using namespace std;
 
     Status::Status(int _town,int _distance){
