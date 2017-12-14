@@ -136,34 +136,34 @@ int main(int argc, char*argv[]){
                 }
             }
 
-             else {
+             else{
 
-                bool canPassThief = true;
-                for (int j = 0; j < e.thieves.size(); j++) {
+                bool canPassThief=true;
+                for (int j=0;j<e.thieves.size();j++){
                     if (!currentStatus.coins[e.thieves[j]])
-                        canPassThief = false;
+                        canPassThief=false;
                 }
 
                 if (canPassThief) {
 
-                    bool mapHasIt = true;
-                    if (currentStatus.roadmap.count(road) == 0)
-                        mapHasIt = false;
+                    bool mapHasIt=true;
+                    if (currentStatus.roadmap.count(road)==0)
+                        mapHasIt=false;
                     if (!mapHasIt) {
-                        Status s(e.finish,e.weigth + currentStatus.distance);
-                        s.path = currentStatus.path + to_string(e.finish) + " ";
-                        for (int a = 1; a < 14; a++) {
-                            s.coins[a] = currentStatus.coins[a];
+                        Status s(e.finish,e.weigth+currentStatus.distance);
+                        s.path=currentStatus.path+to_string(e.finish)+" ";
+                        for (int a=1;a<14;a++){
+                            s.coins[a]=currentStatus.coins[a];
                         }
-                        bool isCoin = false;
-                        for (int b = 1; b < 14; b++) {
-                            if (!currentStatus.coins[b] && vertices[s.town].coins[b]) {
-                                s.coins[b] = true;
-                                isCoin = true;
+                        bool isCoin=false;
+                        for (int b=1;b<14;b++){
+                            if (!currentStatus.coins[b] && vertices[s.town].coins[b]){
+                                s.coins[b]=true;
+                                isCoin=true;
                                 s.roadmap.clear();
                             }
                         }
-                        if (!isCoin) {
+                        if (!isCoin){
                             s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
                             s.roadmap.insert(make_pair(road, 0));
                         }
