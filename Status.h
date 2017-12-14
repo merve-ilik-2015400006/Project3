@@ -10,14 +10,12 @@ using namespace std;
 #include <set>
 #include <vector>
 #include <string>
-#include <map>
 class Status{
 public:
     int town;
     int distance;
     string path;
     bool *coins;
-    map <vector<int>,int > roadmap;
     Status(int town,int distance);
 };
 
