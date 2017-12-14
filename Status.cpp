@@ -4,13 +4,16 @@
 #include "Status.h"
 #include <vector>
 #include <string>
+#include <map>
+using namespace std;
 
     Status::Status(int _town,int _distance){
         town=_town;
         distance=_distance;
         path="";
+        coins=new bool[14];
         for(int i=0;i<=13;i++){
-            coins[i]=0;
+            coins[i]=false;
         }
     }
 

@@ -6,7 +6,7 @@
 
 
     Node::Node(){
-       // coins=new int[13];
+        coins=new bool[14];
         for(int i=0;i<=13;i++)
             coins[i]=0;
     }

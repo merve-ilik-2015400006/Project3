@@ -50,7 +50,7 @@ int main(int argc, char*argv[]){
         coinNumber=stoi(words1[1]);
         for(int a=0;a<coinNumber;a++){
             x=stoi(words1[a+2]);
-            vertices[town].coins[x]=1;
+            vertices[town].coins[x]=true;
         }
     }
 
@@ -83,8 +83,8 @@ int main(int argc, char*argv[]){
     }
     Status currentStatus(1,0);
     for(int a=0;a<14;a++){
-        if(vertices[1].coins[a]!=0)
-            currentStatus.coins[a]=1;
+        if(vertices[1].coins[a])
+            currentStatus.coins[a]=true;
     }
 
     priority_queue <Status,vector<Status>,compareDistance > q;
@@ -121,8 +121,8 @@ int main(int argc, char*argv[]){
                     }
                     bool isCoin=false;
                     for(int b=1;b<14;b++){
-                        if(currentStatus.coins[b]==0 && vertices[s.town].coins[b]==1){
-                            s.coins[b]=1;
+                        if(!currentStatus.coins[b] && vertices[s.town].coins[b]){
+                            s.coins[b]=true;
                             isCoin=true;
                             s.roadmap.clear();
 
@@ -140,7 +140,7 @@ int main(int argc, char*argv[]){
 
                 bool canPassThief = true;
                 for (int j = 0; j < e.thieves.size(); j++) {
-                    if (currentStatus.coins[e.thieves[j]] == 0)
+                    if (!currentStatus.coins[e.thieves[j]])
                         canPassThief = false;
                 }
 
@@ -157,8 +157,8 @@ int main(int argc, char*argv[]){
                         }
                         bool isCoin = false;
                         for (int b = 1; b < 14; b++) {
-                            if (currentStatus.coins[b]==0 &&vertices[s.town].coins[b] == 1) {
-                                s.coins[b] = 1;
+                            if (!currentStatus.coins[b] && vertices[s.town].coins[b]) {
+                                s.coins[b] = true;
                                 isCoin = true;
                                 s.roadmap.clear();
                             }
@@ -173,7 +173,6 @@ int main(int argc, char*argv[]){
             }
          }
      }
-//int visited[n][8192]={0};
     if(!isDone)
         myfile<<-1;
 

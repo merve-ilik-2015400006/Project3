@@ -10,7 +10,8 @@ using namespace std;
 class Node{
 public:
     vector<Edge> edges;
-    int coins[14];
+    bool *coins;
+
     Node();
 };
 #endif //PROJECT3_MERVE_ILIK_2015400006_MASTER_NODE_H
