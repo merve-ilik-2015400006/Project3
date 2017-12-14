@@ -13,6 +13,7 @@ public:
     int finish;
     int weigth;
     vector<int> thieves;
+    bool isVisited;
     Edge(int from,int to,int weigth);
 
 };

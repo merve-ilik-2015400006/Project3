@@ -108,12 +108,12 @@ int main(int argc, char*argv[]){
 
              Edge e=vertices[currentStatus.town].edges[i];
 
-             vector<int> road={currentStatus.town,e.finish};
+             //vector<int> road={currentStatus.town,e.finish};
             if(e.thieves.size()==0){
-                bool mapHasIt=true;
+               /* bool mapHasIt=true;
                 if(currentStatus.roadmap.count(road)==0)
-                    mapHasIt=false;
-                if(!mapHasIt){
+                    mapHasIt=false;*/
+                if(!e.isVisited){
                     Status s(e.finish,e.weigth+currentStatus.distance);
                     s.path=currentStatus.path+to_string(e.finish)+" ";
                     for(int a=1;a<14;a++){
@@ -124,49 +124,49 @@ int main(int argc, char*argv[]){
                         if(!currentStatus.coins[b] && vertices[s.town].coins[b]){
                             s.coins[b]=true;
                             isCoin=true;
-                            s.roadmap.clear();
-
+                            e.isVisited=false;
                         }
                     }
                     if(!isCoin){
-                        s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
-                        s.roadmap.insert(make_pair(road,0));
+                    e.isVisited=true;
                     }
+                    vertices[currentStatus.town].edges[i]=e;
                     q.push(s);
                 }
             }
 
-             else{
+             else {
 
                 bool canPassThief=true;
-                for (int j=0;j<e.thieves.size();j++){
+                for (int j=0;j<e.thieves.size();j++) {
                     if (!currentStatus.coins[e.thieves[j]])
                         canPassThief=false;
                 }
-
-                if (canPassThief) {
-
-                    bool mapHasIt=true;
-                    if (currentStatus.roadmap.count(road)==0)
-                        mapHasIt=false;
-                    if (!mapHasIt) {
+                if (canPassThief){
+                    //bool mapHasIt=true;
+                  /*  if (currentStatus.roadmap.count(road)==0)
+                        mapHasIt=false;*/
+                    if (!e.isVisited){
                         Status s(e.finish,e.weigth+currentStatus.distance);
-                        s.path=currentStatus.path+to_string(e.finish)+" ";
-                        for (int a=1;a<14;a++){
+                        s.path=currentStatus.path+to_string(e.finish) + " ";
+                        for (int a=1;a<14;a++) {
                             s.coins[a]=currentStatus.coins[a];
                         }
                         bool isCoin=false;
-                        for (int b=1;b<14;b++){
-                            if (!currentStatus.coins[b] && vertices[s.town].coins[b]){
+                        for (int b=1;b<14;b++) {
+                            if (!currentStatus.coins[b] && vertices[s.town].coins[b]) {
                                 s.coins[b]=true;
                                 isCoin=true;
-                                s.roadmap.clear();
+                                //s.roadmap.clear();
+                                e.isVisited=false;
                             }
                         }
-                        if (!isCoin){
-                            s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
-                            s.roadmap.insert(make_pair(road, 0));
+                        if (!isCoin) {
+                            e.isVisited=true;
+                            /*s.roadmap.insert(currentStatus.roadmap.begin(),currentStatus.roadmap.end());
+                            s.roadmap.insert(make_pair(road, 0));*/
                         }
+                        vertices[currentStatus.town].edges[i]=e;
                         q.push(s);
                     }
                 }
@@ -178,6 +178,3 @@ int main(int argc, char*argv[]){
 
     return 0;
 }
-
-
-

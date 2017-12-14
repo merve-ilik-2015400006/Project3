@@ -9,6 +9,7 @@
         start=first;
         finish=last;
         weigth=w;
+        isVisited=false;
 
     }
 
