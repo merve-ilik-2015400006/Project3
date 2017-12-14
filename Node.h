@@ -10,7 +10,7 @@ using namespace std;
 class Node{
 public:
     vector<Edge> edges;
-    bool *coins;
+    bool coins[14];
 
     Node();
 };
