@@ -15,7 +15,7 @@ public:
     int town;
     int distance;
     string path;
-    bool *coins;
+    bool coins[14];
     Status(int town,int distance);
 };
 
